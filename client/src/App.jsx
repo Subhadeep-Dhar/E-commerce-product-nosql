@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import API_BASE from './api';
 import Home from './pages/Home';
 import ProductDetail from './pages/ProductDetail';
 import Cart from './pages/Cart';
@@ -22,7 +23,7 @@ function App() {
         setCartCount(0);
         return;
       }
-      const res = await fetch(`/api/cart/${sessionId}`);
+      const res = await fetch(`${API_BASE}/cart/${sessionId}`);
       const data = await res.json();
       if (res.ok && data.success && data.data && data.data.items) {
         setCartCount(data.data.itemCount || 0);

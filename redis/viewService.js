@@ -1,25 +1,24 @@
 const redis = require('../config/redis');
 
-const VIEW_TTL = 86400; // 24 hours for daily tracking
+const VIEW_TTL = 86400; // 24 hours
 
 const viewService = {
   /**
-   * Increment view count for a product
-   * INCR views:<productId>
+   * Increment view count
    */
   async incrementView(productId) {
     const key = `views:${productId}`;
     const views = await redis.incr(key);
-    // Set TTL only on first view (when count becomes 1)
+
     if (views === 1) {
       await redis.expire(key, VIEW_TTL);
     }
+
     return views;
   },
 
   /**
-   * Get view count for a product
-   * GET views:<productId>
+   * Get single product views
    */
   async getViews(productId) {
     const key = `views:${productId}`;
@@ -28,23 +27,34 @@ const viewService = {
   },
 
   /**
-   * Get view counts for multiple products
+   * ✅ FIXED: Get multiple views (Upstash compatible)
    */
   async getMultipleViews(productIds) {
     if (!productIds || productIds.length === 0) return {};
 
-    const pipeline = redis.pipeline();
-    productIds.forEach(id => {
-      pipeline.get(`views:${id}`);
-    });
+    try {
+      const values = await Promise.all(
+        productIds.map(id => redis.get(`views:${id}`))
+      );
 
-    const results = await pipeline.exec();
-    const viewMap = {};
-    productIds.forEach((id, index) => {
-      viewMap[id] = parseInt(results[index][1]) || 0;
-    });
+      const viewMap = {};
+      productIds.forEach((id, index) => {
+        viewMap[id] = parseInt(values[index]) || 0;
+      });
 
-    return viewMap;
+      return viewMap;
+
+    } catch (error) {
+      console.error("Error in getMultipleViews:", error.message);
+
+      // fallback: return 0 for all
+      const viewMap = {};
+      productIds.forEach(id => {
+        viewMap[id] = 0;
+      });
+
+      return viewMap;
+    }
   }
 };
 

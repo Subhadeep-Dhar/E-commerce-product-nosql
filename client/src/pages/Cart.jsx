@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import API_BASE from '../api';
 
 const getProductImage = (item) => {
   if (item.image_url) {
@@ -23,7 +24,7 @@ const Cart = () => {
         return;
       }
 
-      const res = await fetch(`/api/cart/${sessionId}`);
+      const res = await fetch(`${API_BASE}/cart/${sessionId}`);
       const data = await res.json();
 
       if (res.ok && data.success) {
@@ -41,7 +42,7 @@ const Cart = () => {
 
   const handleUpdateQty = async (productId, delta) => {
     try {
-      await fetch('/api/cart/add', {
+      await fetch(`${API_BASE}/cart/add`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -59,7 +60,7 @@ const Cart = () => {
 
   const handleRemove = async (productId) => {
     try {
-      await fetch('/api/cart/remove', {
+      await fetch(`${API_BASE}/cart/remove`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

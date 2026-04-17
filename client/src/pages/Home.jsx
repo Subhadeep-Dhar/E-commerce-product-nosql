@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
+import API_BASE from '../api';
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -22,7 +23,7 @@ const Home = () => {
 
   const fetchProducts = async (page = 1) => {
     setLoading(true);
-    let url = `/api/products?page=${page}&limit=${pagination.limit}`;
+    let url = `${API_BASE}/products?page=${page}&limit=${pagination.limit}`;
     if (filters.subCategory) url += `&subCategory=${filters.subCategory}`;
     if (filters.minPrice) url += `&minPrice=${filters.minPrice}`;
     if (filters.maxPrice) url += `&maxPrice=${filters.maxPrice}`;
@@ -49,7 +50,7 @@ const Home = () => {
 
   const loadTrending = async () => {
     try {
-      const res = await fetch('/api/trending');
+      const res = await fetch(`${API_BASE}/trending`);
       const data = await res.json();
       if (res.ok && data.data) {
         setTrending(data.data);
@@ -63,7 +64,7 @@ const Home = () => {
     try {
       const sessionId = localStorage.getItem('sessionId');
       if (!sessionId) return;
-      const res = await fetch(`/api/recently-viewed/${sessionId}`);
+      const res = await fetch(`${API_BASE}/recently-viewed/${sessionId}`);
       const data = await res.json();
       if (res.ok && data.data) {
         setRecentlyViewed(data.data);

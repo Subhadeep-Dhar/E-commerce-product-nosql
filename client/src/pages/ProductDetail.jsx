@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import API_BASE from '../api';
 
 const getProductImage = (product) => {
   if (product.image_url) {
@@ -24,7 +25,7 @@ const ProductDetail = () => {
     const fetchProduct = async () => {
       try {
         const sessionId = localStorage.getItem('sessionId');
-        const res = await fetch(`/api/products/${id}?userId=${sessionId}`);
+        const res = await fetch(`${API_BASE}/products/${id}?userId=${sessionId}`);
         const data = await res.json();
         if (res.ok) setProduct(data.data);
       } catch (err) {
@@ -34,7 +35,7 @@ const ProductDetail = () => {
 
     const fetchReviews = async () => {
       try {
-        const res = await fetch(`/api/reviews/${id}`);
+        const res = await fetch(`${API_BASE}/reviews/${id}`);
         const data = await res.json();
         if (res.ok) setReviews(data.data);
       } catch (err) {
@@ -54,7 +55,7 @@ const ProductDetail = () => {
         productId: product._id,
         quantity: qty
       };
-      const res = await fetch('/api/cart/add', {
+      const res = await fetch(`${API_BASE}/cart/add`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -83,7 +84,7 @@ const ProductDetail = () => {
         rating: reviewForm.rating,
         comment: reviewForm.comment
       };
-      const res = await fetch('/api/reviews', {
+      const res = await fetch(`${API_BASE}/reviews`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

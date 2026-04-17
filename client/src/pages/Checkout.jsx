@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import API_BASE from '../api';
 
 const Checkout = () => {
   const [cart, setCart] = useState(null);
@@ -29,7 +30,7 @@ const Checkout = () => {
         }
         
         // 1. Fetch Cart Data
-        const cartRes = await fetch(`/api/cart/${sessionId}`);
+        const cartRes = await fetch(`${API_BASE}/cart/${sessionId}`);
         const cartData = await cartRes.json();
         if (cartRes.ok && cartData.success) {
           setCart(cartData.data);
@@ -37,7 +38,7 @@ const Checkout = () => {
 
         // 2. Fetch Saved Profile (Non-blocking)
         try {
-          const profileRes = await fetch(`/api/checkout/profile/${sessionId}`);
+          const profileRes = await fetch(`${API_BASE}/checkout/profile/${sessionId}`);
           if (profileRes.ok) {
             const profileData = await profileRes.json();
             if (profileData.success && profileData.data) {
@@ -95,7 +96,7 @@ const Checkout = () => {
     
     try {
       const sessionId = localStorage.getItem('sessionId');
-      const res = await fetch('/api/checkout', {
+      const res = await fetch(`${API_BASE}/checkout`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
