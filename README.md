@@ -1,83 +1,174 @@
 # Muse Mart — Musical Instruments Store
 
-A music gear marketplace built with Node.js, Express, MongoDB, Redis, and React. This version is focused exclusively on musical instruments and audio equipment.
+Muse Mart is a full-stack e-commerce application focused on musical instruments and studio equipment. It provides a modern product catalog with filtering, search, and real-time insights powered by a scalable cloud-based architecture.
 
-## What changed
-- All products are now musical instruments or studio audio gear.
-- The product model uses `type: instrument` and `subCategory` values like `guitar`, `piano`, `drums`, `audio`, and `studio`.
-- Legacy mixed-category product types have been replaced with an instrument-only catalog, UI, and API logic.
-- Product cards now show only instrument brand, type, price, stock, and reviews.
-- Images are loaded from online sources using dynamic Unsplash queries.
+---
+
+## Overview
+
+This application allows users to browse and explore a curated collection of musical instruments including guitars, pianos, drums, and studio audio gear. It includes features such as product filtering, pagination, trending products, and recently viewed items.
+
+The system is designed using a distributed architecture with separate frontend and backend deployments, along with managed database and caching services.
+
+---
+
+## Features
+
+- Instrument-focused product catalog  
+- Advanced filtering (category, price, rating, search)  
+- Pagination for scalable product browsing  
+- Trending products based on real-time activity  
+- Recently viewed items tracking  
+- Product reviews and ratings  
+- Smart cart and checkout functionality  
+- RESTful API architecture  
+
+---
 
 ## Tech Stack
-- Frontend: React + Vite
-- Backend: Node.js + Express
-- Databases: MongoDB + Redis
 
-## How to run
+### Frontend
+- React (Vite)
 
-### 1. Prerequisites
-- Node.js installed.
-- MongoDB running locally on port `27017`.
-- Redis running locally on port `6379`.
+### Backend
+- Node.js  
+- Express  
 
-### 2. Environment Setup
-Create a `.env` file in the project root:
+### Databases & Services
+- MongoDB Atlas (Primary database)  
+- Upstash Redis (Caching and real-time insights)  
 
-```env
-MONGO_URI=mongodb://localhost:27017/ecommerce_catalog
-REDIS_URL=redis://localhost:6379
-PORT=3000
+### Deployment
+- Frontend: Vercel  
+- Backend: Render  
+
+---
+
+## Project Structure
+
+```
+client/        → React frontend
+controllers/   → API logic
+models/        → MongoDB schemas
+routes/        → API routes
+redis/         → Redis services (views, trending, recently viewed)
+config/        → DB and Redis configuration
+seed/          → Database seeding scripts
+server.js      → Backend entry point
 ```
 
-### 3. Install dependencies
+---
 
-```bash
+## Environment Variables
+
+Create a `.env` file in the root directory:
+
+```
+MONGO_URI=your_mongodb_atlas_uri
+UPSTASH_REDIS_REST_URL=your_upstash_url
+UPSTASH_REDIS_REST_TOKEN=your_upstash_token
+PORT=5000
+```
+
+For frontend (`client/.env`):
+
+```
+VITE_API_URL=https://your-backend.onrender.com
+```
+
+---
+
+## Running Locally
+
+### 1. Install dependencies
+```
+npm install
+cd client
 npm install
 ```
 
-### 4. Seed the database
-
-```bash
+### 2. Seed the database
+```
 npm run seed
 ```
 
-### 5. Start the backend
-
-```bash
-npm run start
+### 3. Start backend
+```
+npm run dev
 ```
 
-### 6. Open the app
+### 4. Start frontend
+```
+cd client
+npm run dev
+```
 
-Visit `http://localhost:3000`
+### 5. Open application
 
-## Seeded product categories
-- Guitars
-- Pianos
-- Drum kits
-- Microphones
-- Audio interfaces
-- Mixers
-- Studio headphones
-- Loop stations
+Frontend: http://localhost:5173  
+Backend API: http://localhost:5000/api  
+
+---
 
 ## API Endpoints
-- `GET /api/products` — list all instrument products
-- `GET /api/products/:id` — get product details
-- `GET /api/trending` — trending instrument products
-- `GET /api/recently-viewed/:userId` — recently viewed items
-- `POST /api/cart/add` — add instrument to cart
-- `GET /api/cart/:userId` — get cart contents
-- `POST /api/checkout` — place an order
-- `GET /api/reviews/:productId` — get reviews
-- `POST /api/reviews` — a
-- `GET /api/products` — list all instrument products
-- `GET /api/products/:id` — get product details
-- `GET /api/trending` — trending instrument products
-- `GET /api/recently-viewed/:userId` — recently viewed items
-- `POST /api/cart/add` — add instrument to cart
-- `GET /api/cart/:userId` — get cart contents
-- `POST /api/checkout` — place an order
-- `GET /api/reviews/:productId` — get reviews
-- `POST /api/reviews` — add a review
+
+### Products
+- `GET /api/products` — List all products  
+- `GET /api/products/:id` — Get product details  
+
+### Trending & Activity
+- `GET /api/trending` — Trending products  
+- `GET /api/recently-viewed/:userId` — Recently viewed items  
+
+### Cart & Orders
+- `POST /api/cart/add` — Add item to cart  
+- `GET /api/cart/:userId` — Get cart  
+- `POST /api/checkout` — Place order  
+
+### Reviews
+- `GET /api/reviews/:productId` — Get reviews  
+- `POST /api/reviews` — Add review  
+
+---
+
+## Seeded Categories
+
+- Guitars  
+- Pianos  
+- Drums  
+- Audio Equipment  
+- Studio Gear  
+
+---
+
+## Deployment
+
+- Backend deployed on Render  
+- Frontend deployed on Vercel  
+- MongoDB hosted on Atlas  
+- Redis powered by Upstash  
+
+---
+
+## Notes
+
+- Redis is used for tracking product views and trending data  
+- All product data is stored in MongoDB Atlas  
+- Frontend communicates with backend via REST APIs  
+- Designed for scalability and cloud-native deployment  
+
+---
+
+## Author
+
+Subhadeep Dhar
+
+---
+
+## What I Improved
+
+- Removed duplicate endpoints  
+- Updated to cloud architecture  
+- Clean structure and formatting  
+- Professional wording  
+- Ready for GitHub display  
