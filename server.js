@@ -34,7 +34,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Serve static frontend files (React dist)
-app.use(express.static(path.join(__dirname, 'client', 'dist')));
+// app.use(express.static(path.join(__dirname, 'client', 'dist')));
 
 // API routes
 app.use('/api/products', productRoutes);
@@ -54,11 +54,15 @@ app.get('/api/health', (req, res) => {
 });
 
 // React fallback
-app.get('*', (req, res) => {
-  if (!req.path.startsWith('/api')) {
-    res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
-  }
+// app.get('*', (req, res) => {
+//   if (!req.path.startsWith('/api')) {
+//     res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+//   }
+// });
+app.get('/', (req, res) => {
+  res.send("API is running...");
 });
+
 
 // Cron job
 cron.schedule('0 * * * *', async () => {
