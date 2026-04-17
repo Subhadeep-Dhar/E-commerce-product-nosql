@@ -4,8 +4,7 @@ const TRENDING_KEY = 'trending';
 
 const trendingService = {
   /**
-   * Track a product view in the trending sorted set
-   * ZINCRBY trending 1 <productId>
+   * Track a product view
    */
   async trackView(productId) {
     const score = await redis.zincrby(TRENDING_KEY, 1, productId.toString());
@@ -13,26 +12,23 @@ const trendingService = {
   },
 
   /**
-   * Get top N trending products
-   * ZREVRANGE trending 0 N-1 WITHSCORES
+   * Get top trending products
    */
   async getTopTrending(count = 10) {
-    const results = await redis.zrevrange(TRENDING_KEY, 0, count - 1, 'WITHSCORES');
+    const results = await redis.zrange(TRENDING_KEY, 0, count - 1, {
+      rev: true,
+      withScores: true,
+    });
 
-    // Results come as [member1, score1, member2, score2, ...]
-    const trending = [];
-    for (let i = 0; i < results.length; i += 2) {
-      trending.push({
-        productId: results[i],
-        views: parseInt(results[i + 1])
-      });
-    }
-    return trending;
+    // Upstash returns array of objects
+    return results.map(item => ({
+      productId: item.member,
+      views: item.score
+    }));
   },
 
   /**
-   * Reset the trending sorted set (called hourly by cron)
-   * DEL trending
+   * Reset trending
    */
   async resetTrending() {
     await redis.del(TRENDING_KEY);

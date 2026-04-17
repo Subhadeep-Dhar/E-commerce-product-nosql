@@ -1,38 +1,19 @@
-const Redis = require('ioredis');
+const { Redis } = require("@upstash/redis");
 
-const redis = new Redis(process.env.REDIS_URL, {
-  maxRetriesPerRequest: 3,
-  retryStrategy(times) {
-    if (times > 5) {
-      console.log('[Redis] Max reconnection attempts reached. Redis features will be unavailable.');
-      return null; // Stop retrying
-    }
-    const delay = Math.min(times * 500, 3000);
-    return delay;
-  },
-  lazyConnect: false,
-  showFriendlyErrorStack: true
+// Initialize Upstash Redis (HTTP-based, no persistent connection)
+const redis = new Redis({
+  url: process.env.UPSTASH_REDIS_REST_URL,
+  token: process.env.UPSTASH_REDIS_REST_TOKEN,
 });
 
-let isConnected = false;
+// Since Upstash is stateless, we assume it's available if credentials exist
+redis.isAvailable = () => {
+  return !!(
+    process.env.UPSTASH_REDIS_REST_URL &&
+    process.env.UPSTASH_REDIS_REST_TOKEN
+  );
+};
 
-redis.on('connect', () => {
-  isConnected = true;
-  console.log('Redis Connected');
-});
-
-redis.on('error', (err) => {
-  if (isConnected) {
-    console.error('Redis Error:', err.message);
-  }
-  isConnected = false;
-});
-
-redis.on('close', () => {
-  isConnected = false;
-});
-
-// Helper to check if Redis is available
-redis.isAvailable = () => isConnected;
+console.log("Upstash Redis Connected");
 
 module.exports = redis;

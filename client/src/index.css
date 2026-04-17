@@ -150,6 +150,99 @@ label {
 .nav-right {
   display: flex;
   justify-content: flex-end;
+  position: relative;
+}
+
+.nav-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.85rem;
+  border-radius: 16px;
+  transition: background var(--transition), transform var(--transition);
+}
+
+.nav-toggle:hover,
+.nav-toggle:focus-visible {
+  background: rgba(255,255,255,0.08);
+  outline: none;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  margin: 4px 0;
+  border-radius: 999px;
+  background: var(--text-primary);
+  transition: transform var(--transition), opacity var(--transition);
+}
+
+.nav-toggle.open span:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.nav-toggle.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-toggle.open span:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+.mobile-nav {
+  position: absolute;
+  top: calc(100% + 0.75rem);
+  right: 0;
+  width: min(320px, calc(100vw - 2rem));
+  z-index: 1001;
+  background: rgba(8, 8, 10, 0.92);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 22px;
+  padding: 1rem 1rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  opacity: 0;
+  transform: translateY(-12px);
+  max-height: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transition: opacity var(--transition), transform var(--transition), max-height var(--transition);
+}
+
+.mobile-nav.open {
+  opacity: 1;
+  transform: translateY(0);
+  max-height: 320px;
+  pointer-events: auto;
+}
+
+.mobile-nav a,
+.mobile-nav .nav-cta {
+  width: 100%;
+}
+
+.mobile-nav a {
+  color: var(--text-muted);
+  padding: 0.95rem 0.85rem;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.03);
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+}
+
+.mobile-nav a:hover {
+  color: var(--text-primary);
+}
+
+.mobile-nav .nav-cta {
+  margin-top: 0.35rem;
 }
 
 .nav-cta {
@@ -414,15 +507,24 @@ label {
   }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 768px) {
   .navbar-inner {
     grid-template-columns: 1fr;
     gap: 1rem;
     text-align: center;
   }
 
+  .nav-links,
+  .nav-right > .nav-cta:not(.mobile-cta) {
+    display: none;
+  }
+
   .nav-right {
     justify-content: center;
+  }
+
+  .nav-toggle {
+    display: inline-flex;
   }
 
   .hero {

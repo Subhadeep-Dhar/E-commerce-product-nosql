@@ -172,39 +172,12 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="features">
+      {/* <section className="features">
         <div className="feature-item">Fast shipping for music gear</div>
         <div className="feature-item">Trusted brands, pro quality</div>
         <div className="feature-item">Safe checkout and support</div>
-      </section>
+      </section> */}
 
-      {trending.length > 0 && (
-        <section className="horizontal-scroll-section">
-          <div className="section-header">
-            <div>
-              <h2 className="section-title">Trending Now</h2>
-              <p className="section-subtitle">Top instrument picks this hour</p>
-            </div>
-          </div>
-          <div className="horizontal-scroll">
-            {trending.map(p => <ProductCard key={p._id} product={p} />)}
-          </div>
-        </section>
-      )}
-
-      {recentlyViewed.length > 0 && (
-        <section className="horizontal-scroll-section">
-          <div className="section-header">
-            <div>
-              <h2 className="section-title">Recently Viewed</h2>
-              <p className="section-subtitle">Back to your latest gear</p>
-            </div>
-          </div>
-          <div className="horizontal-scroll">
-            {recentlyViewed.map(p => <ProductCard key={p._id} product={p} />)}
-          </div>
-        </section>
-      )}
 
       <section className="filters-bar">
         <div className="filter-group">
@@ -247,7 +220,7 @@ const Home = () => {
             value={filters.search}
             onChange={handleFilterChange}
             style={{ width: '100%' }}
-          />
+            />
         </div>
         <div className="filter-group">
           <button className="filter-btn filter-btn-primary" onClick={applyFilters}>Apply</button>
@@ -273,14 +246,41 @@ const Home = () => {
           <div className="pagination">
             {[...Array(pagination.totalPages)].map((_, i) => (
               <button
-                key={i}
-                className={`pagination-btn ${pagination.page === i + 1 ? 'active' : ''}`}
-                onClick={() => fetchProducts(i + 1)}
+              key={i}
+              className={`pagination-btn ${pagination.page === i + 1 ? 'active' : ''}`}
+              onClick={() => fetchProducts(i + 1)}
               >
                 {i + 1}
               </button>
             ))}
           </div>
+        )}
+        {trending.length > 0 && (
+          <section className="horizontal-scroll-section">
+            <div className="section-header">
+              <div>
+                <h2 className="section-title">Trending Now</h2>
+                <p className="section-subtitle">Top instrument picks this hour</p>
+              </div>
+            </div>
+            <div className="horizontal-scroll">
+              {trending.map(p => <ProductCard key={p._id} product={p} />)}
+            </div>
+          </section>
+        )}
+  
+        {recentlyViewed.length > 0 && (
+          <section className="horizontal-scroll-section">
+            <div className="section-header">
+              <div>
+                <h2 className="section-title">Recently Viewed</h2>
+                <p className="section-subtitle">Back to your latest gear</p>
+              </div>
+            </div>
+            <div className="horizontal-scroll">
+              {recentlyViewed.map(p => <ProductCard key={p._id} product={p} />)}
+            </div>
+          </section>
         )}
       </section>
     </main>

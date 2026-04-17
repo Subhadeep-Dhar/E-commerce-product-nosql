@@ -10,6 +10,10 @@ import Footer from './components/Footer';
 
 function App() {
   const [cartCount, setCartCount] = useState(0);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const toggleMenu = () => setMenuOpen((prev) => !prev);
+  const closeMenu = () => setMenuOpen(false);
 
   const fetchCartCount = async () => {
     try {
@@ -63,13 +67,47 @@ function App() {
           <div className="nav-right">
             <button
               className="nav-cta"
-              onClick={() =>
+              onClick={() => {
                 document.getElementById('products-section')
-                  ?.scrollIntoView({ behavior: 'smooth' })
-              }
+                  ?.scrollIntoView({ behavior: 'smooth' });
+                closeMenu();
+              }}
             >
               Shop Now
             </button>
+
+            <button
+              className={`nav-toggle${menuOpen ? ' open' : ''}`}
+              aria-expanded={menuOpen}
+              aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+              onClick={toggleMenu}
+              type="button"
+            >
+              <span />
+              <span />
+              <span />
+            </button>
+
+            <div className={`mobile-nav${menuOpen ? ' open' : ''}`}>
+              <Link to="/" onClick={closeMenu}>Home</Link>
+              <Link to="/about" onClick={closeMenu}>About</Link>
+              <Link to="/cart" className="cart-link" onClick={closeMenu}>
+                Cart
+                {cartCount > 0 && (
+                  <span className="cart-badge">{cartCount}</span>
+                )}
+              </Link>
+              <button
+                className="nav-cta mobile-cta"
+                onClick={() => {
+                  document.getElementById('products-section')
+                    ?.scrollIntoView({ behavior: 'smooth' });
+                  closeMenu();
+                }}
+              >
+                Shop Now
+              </button>
+            </div>
           </div>
 
         </div>

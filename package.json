@@ -8,14 +8,22 @@
     "dev": "nodemon server.js",
     "seed": "node seed/seed.js"
   },
-  "keywords": ["ecommerce", "mongodb", "redis", "express", "catalog"],
+  "keywords": [
+    "ecommerce",
+    "mongodb",
+    "redis",
+    "express",
+    "catalog"
+  ],
   "author": "Akshat Jain",
   "license": "ISC",
   "dependencies": {
+    "@upstash/redis": "^1.37.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "ioredis": "^5.4.2",
+    "mongodb": "^7.1.1",
     "mongoose": "^8.9.5",
     "node-cron": "^3.0.3"
   },
