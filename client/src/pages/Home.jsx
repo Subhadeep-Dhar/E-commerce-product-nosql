@@ -269,7 +269,10 @@ const Home = () => {
             </div>
           </section>
         )}
-  
+
+
+        <br> </br>
+        
         {recentlyViewed.length > 0 && (
           <section className="horizontal-scroll-section">
             <div className="section-header">
